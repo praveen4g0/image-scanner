@@ -1,4 +1,4 @@
-# Admission controller use case 
+# (Image scanner) Admission controller.
 This is an example of custom Kubernetes Controller which scans images from containers and stop pods/deployments spawning with vulnerable images.
 
 Under the hood, it uses trivy <https://github.com/aquasecurity/trivy> to scan image used in the pod definition.
