@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: validate
+  namespace: default
+spec:
+  selector:
+    app: validate-webhook
+  ports:
+    - port: 443
+      targetPort: tls
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: validate-webhook
+  namespace: default
+  labels:
+    app: validate-webhook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: validate-webhook
+  template:
+    metadata:
+      labels:
+        app: validate-webhook
+    spec:
+      serviceAccountName: default
+      containers:
+      - name: server
+        image: quay.io/praveen4g0/image-scanner:v0.0.1
+        imagePullPolicy: Always
+        securityContext:
+            privileged: true
+        ports:
+        - containerPort: 443
+          name: tls
+        volumeMounts:
+        - name: certs-volume
+          readOnly: true
+          mountPath: "/certs"
+        imagePullPolicy: Always
+      volumes:
+      - name: certs-volume
+        secret:
+          defaultMode: 420
+          secretName: validate-tls
