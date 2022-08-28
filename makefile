@@ -16,17 +16,17 @@ run-as-privilaged-user: ## Applicable only to openhsift, Run application with pr
 .PHONY: generate-certificates
 generate-certificates: ## Genereate certificates for webhook services
 	@echo "Generating tls certificates for webhook services..."
-	. ./generate-certs.sh
+	. ./util/generate-certs.sh
 
 .PHONY: generate-secrets
 generate-secrets: generate-certificates ## Creates k8s tls secrets for webhook services
 	@echo "Creates k8s tls secrets for webhook services.."
-	. ./create-secret.sh
+	. ./util/create-secret.sh
 
 .PHONY: deploy
 deploy: ## Deploy's webhook service and Validating Webhook Configuration
 	@echo "Deploy's webhook service and Validating Webhook Configuration..."
-	. ./create-webhook.sh $(API) $(RESOURCE) $(VERSION) $(IMAGE)
+	. ./util/create-webhook.sh $(API) $(RESOURCE) $(VERSION) $(IMAGE)
 
 .PHONY: undeploy
 undeploy: ## Undeploy's webhook service and Validating Webhook Configuration
