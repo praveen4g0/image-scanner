@@ -3,8 +3,35 @@ from flask import Flask, request, jsonify
 
 admission_controller = Flask(__name__)
 
-@admission_controller.route("/validate", methods=["POST"])
+@admission_controller.route("/validate/deployments", methods=["POST"])
 def deployment_webhook():
+    request_info = request.get_json()
+    uid = request_info["request"]["uid"]
+    is_secure = True
+    for each_image in request_info["request"]["object"]["spec"]["template"]["spec"]["containers"]:
+        command = [
+            "/opt/app-root/src/trivy",
+            "image",
+            "-f",
+            "json",
+            "-s",
+            "CRITICAL",
+            "--exit-code",
+            "1",
+            each_image["image"],
+        ]
+        print("Running command: %s" % " ".join(command))
+        r = Popen(command)
+        r.communicate()
+        if r.returncode == 1:
+            is_secure = False
+
+    if is_secure:
+        return admission_response(True, "All containers are secure", uid)
+    return admission_response(False, "Not all containers secure, failing ...", uid)
+
+@admission_controller.route("/validate/pods", methods=["POST"])
+def pod_webhook():
     request_info = request.get_json()
     uid = request_info["request"]["uid"]
     is_secure = True

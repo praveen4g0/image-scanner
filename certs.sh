@@ -1,12 +1,19 @@
+RESOURCE=${RESOURCE:-"deployments"}
+API=${API:-"apps"}
+VERSION=${VERSION:-"v1"}
+
+echo $RESOURCE
+
 if [ -f certs ]; then
    rm -rf certs
 fi
+
 if [ -f k8s-manifests/validate-tls-secrets.yaml ]; then
    rm -rf k8s-manifests/validate-tls-secrets.yaml
 fi
 
-if [ -f k8s-manifests/webhook.yaml ]; then
-   rm -rf k8s-manifests/webhook.yaml
+if [ -f k8s-manifests/webhook-$RESOURCE.yaml ]; then
+   rm -rf k8s-manifests/webhook-$RESOURCE.yaml
 fi
 
 mkdir -p certs
@@ -33,9 +40,3 @@ data:
   tls.crt: $(cat ./certs/validate.pem | base64 | tr -d '\n')
   tls.key: $(cat ./certs/validate-key.pem | base64 | tr -d '\n') 
 EOF
-
-#generate CA Bundle + inject into template
-ca_pem_b64="$(openssl base64 -A <"./certs/ca.pem")"
-
-sed -e 's@${CA_PEM_B64}@'"$ca_pem_b64"'@g' <"webhook-template.yaml" \
-    > ./k8s-manifests/webhook.yaml   

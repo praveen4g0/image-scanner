@@ -130,3 +130,6 @@ dmypy.json
 
 # certificates
 certs
+
+# ignore k8s-tls-secrets
+k8s-manifests/validate-tls-secrets.yaml

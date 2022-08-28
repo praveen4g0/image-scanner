@@ -1,21 +1,21 @@
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
-  name: validate-webhook
+  name: validate-webhook-$RESOURCE
 webhooks:
 - name: validate.default.svc.cluster.local
   rules:
-  - apiGroups:   [""]
-    apiVersions: ["v1"]
+  - apiGroups:   ["$API"]
+    apiVersions: ["$VERSION"]
     operations:  ["CREATE"]
-    resources:   ["pods"]
+    resources:   ["$RESOURCE"]
     scope:       "Namespaced"
   clientConfig:
     service:
       name: validate
       namespace: default
-      path: "/validate"
-    caBundle: "${CA_PEM_B64}"
+      path: "/validate/$RESOURCE"
+    caBundle: "$CA_PEM_B64"
   admissionReviewVersions: ["v1", "v1beta1"]
   sideEffects: None
   timeoutSeconds: 5
