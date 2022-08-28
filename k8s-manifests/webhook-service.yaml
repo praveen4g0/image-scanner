@@ -28,7 +28,7 @@ spec:
       serviceAccountName: default
       containers:
       - name: server
-        image: quay.io/praveen4g0/image-scanner:v0.0.1
+        image: $IMAGE
         imagePullPolicy: Always
         securityContext:
             privileged: true

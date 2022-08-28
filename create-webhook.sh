@@ -1,12 +1,11 @@
-RESOURCE=${RESOURCE:-"deployments"}
-API=${API:-"apps"}
-VERSION=${VERSION:-"v1"}
+API=${1:-"apps"}
+RESOURCE=${2:-"deployments"}
+VERSION=${3:-"v1"}
+IMAGE=${4:-"quay.io/praveen4g0/image-scanner:v0.0.1"}
 
-oc delete -f k8s-manifests/webhook-service.yaml --ignore-not-found=true
-oc delete -f webhook-template.yaml --ignore-not-found=true
 # Create webhook-service
-oc apply -f k8s-manifests/webhook-service.yaml
-
+sed -e "s,\$IMAGE,$IMAGE,g" \
+    "k8s-manifests/webhook-service.yaml" | oc apply -f -
 
 #generate CA Bundle + inject into template
 ca_pem_b64="$(openssl base64 -A <"./certs/ca.pem")"
