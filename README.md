@@ -22,7 +22,7 @@ EXPORT IMAGE="quay.io/<user-name>/image-scanner:v$(TAG)"
 ### Generate certificates (optional)
 `make generate-certificates`
 
-### only on openshift to run container on privilaged ports
+### (Applicable only to openshift) Run containers as privilaged users
 `make run-as-privilaged-user`
 
 ### Generate k8s secrets 
