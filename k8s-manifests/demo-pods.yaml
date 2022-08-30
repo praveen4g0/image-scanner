@@ -3,6 +3,8 @@ kind: Pod
 metadata:
   labels:
     app: pod6
+  annotations:
+    scanner.io/owner: image-scanner
   name: pod6
   namespace: default
 spec:
