@@ -33,6 +33,11 @@ EXPORT IMAGE="quay.io/<user-name>/image-scanner:v$(TAG)"
 
 ### How do we test?
  * `oc apply -f k8s-manifests/demo-$RESOURCE.yaml` --> This has image nginx which has vulnerabilites so it stops being created!
+> Note: This validation is only applicable to $RESOURCES with below annotation 
+```
+annotations:
+    scanner.io/owner: image-scanner
+```
 
 ### Uninstall webhook service
 `make undeploy`
