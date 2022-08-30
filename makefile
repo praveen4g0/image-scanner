@@ -35,11 +35,11 @@ undeploy: ## Undeploy's webhook service and Validating Webhook Configuration
     oc delete validatingwebhookconfigurations.admissionregistration.k8s.io validate-webhook-$(RESOURCE) --ignore-not-found=true
 
 .PHONY: docker-build
-docker-build: docker-build ## Build docker image of webhook service.
+docker-build: ## Build docker image of webhook service.
 	@echo "Build Docker image of webhook service..."
-	docker build -t ${IMG} .
+	docker build -t ${IMAGE} .
 
 .PHONY: docker-push
-docker-push: docker-push ## Push docker image of webhook service.
+docker-push: ## Push docker image of webhook service.
 	@echo "Push webhook service docker image"
-	docker push ${IMG}
+	docker push ${IMAGE}
