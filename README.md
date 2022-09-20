@@ -11,7 +11,7 @@ EXPORT API="apps"
 EXPORT RESOURCE="deployments"
 EXPORT VERSION="v1"
 EXPORT TAG="0.0.1"
-EXPORT IMAGE="quay.io/<user-name>/image-scanner:v$(TAG)"
+EXPORT BASE_IMAGE="quay.io/<user-name>/image-scanner"
 
 ```
 * As of now webhook supports scanning images for 2 resources `pods` and `deployments`
